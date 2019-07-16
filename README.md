@@ -1,4 +1,4 @@
-# How to Export Excel File With Django
+# How to Signup User and Send Confirmation Email in Django
 
 ## Tutorial Link - https://studygyaan.com/django/how-to-signup-user-and-send-confirmation-email-in-django
 
