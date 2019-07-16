@@ -1,0 +1,122 @@
+Make sure - you have django.contrib.auth in INSTALLED_APPS
+
+Create a Super User
+
+Open Settings.py and Template Directory - 'DIRS': [BASE_DIR + '/templates/',],
+
+Then go to urls and import 
+from django.contrib.auth import views as auth_views
+
+and in urls pattern add following - 
+path('login/', auth_views.LoginView.as_view()),
+
+Now lets create registeration/login.html
+
+Control Auth View by Customizing
+Passing different Template instead of default - registeration/login.html
+path('login/', auth_views.LoginView.as_view(), {'template_name': 'commons/login.html'}, name='login'),
+
+Tip - if you want to redirect logged in automatically 
+path('login/', auth_views.LoginView.as_view(redirect_authenticated_user=True), {'template_name': 'commons/login.html'}, name='login'),
+
+In urls.py add - 
+path('home/', TemplateView.as_view(template_name='home.html'), name='home'),
+
+Then add in settings.py - 
+LOGIN_REDIRECT_URL = 'home'
+
+Now we will create logout view. It is very simple. Go to urls and add in urls pattern
+path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+
+Then add in settings.py - 
+LOGOUT_REDIRECT_URL = 'home'
+
+
+https://docs.djangoproject.com/en/2.2/topics/auth/default/#using-the-views
+
+
+Change Password -
+in ur urls.py add 
+path(
+        'change-password/',
+        auth_views.PasswordChangeView.as_view(
+            template_name='commons/change-password.html',
+            success_url = '/'
+        ),
+        name='change_password'
+    ),
+
+and create change-password.html
+
+
+Reset Password - 
+Add to ur settings.py
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+in your urls.py add the routes
+# Forget Password
+    path('password-reset/',
+         auth_views.PasswordResetView.as_view(
+             template_name='commons/password-reset/password_reset.html'
+         ),
+         name='password_reset'),
+    path('password-reset/done/',
+         auth_views.PasswordResetDoneView.as_view(
+             template_name='commons/password-reset/password_reset_done.html'
+         ),
+         name='password_reset_done'),
+    path('password-reset-confirm/<uidb64>/<token>/',
+         auth_views.PasswordResetConfirmView.as_view(
+             template_name='commons/password-reset/password_reset_confirm.html'
+         ),
+         name='password_reset_confirm'),
+    path('password-reset-complete/',
+         auth_views.PasswordResetCompleteView.as_view(
+             template_name='commons/password-reset/password_reset_complete.html'
+         ),
+         name='password_reset_complete'),
+
+or simply
+path('accounts/', include('django.contrib.auth.urls')),
+
+Create required templates in commons-
+#Email Templates
+password_reset_subject.txt
+password_reset_email.html
+# Templates
+password_reset.html
+password_reset_done.html
+password_reset_confirm.html
+password_reset_complete.html
+
+Signup 
+
+Create a app name - core
+
+and register that app in INSTALLED_APPS
+
+create urls.py in core app and add the code
+# core/urls.py
+from django.urls import path
+urlpatterns = [
+]
+
+create forms.py in core app and add the code
+# core/forms.py
+from django import forms
+
+
+Then in urls.py include urls.py of core app so that we can use all urls created in core/urls.py
+from core import urls as core_urls
+    path('', include(core_urls)),
+
+
+
+
+
+Sign Up with Confirmation
+
+same as sign Up
+
+create a model Profile in models.py and a signal
+

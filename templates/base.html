@@ -1,0 +1,19 @@
+<html>
+    <head>
+        <title>{% block title %}{% endblock title %}</title>
+        {% block css %} {% endblock css %}
+    </head>
+    <body>
+        <!-- <h1>Built-In User Registeration / Authentication App</h1> -->
+
+        {% block content %} {% endblock content %}
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        
+        {% block javascript %} {% endblock javascript %}
+    </body>
+</html>
